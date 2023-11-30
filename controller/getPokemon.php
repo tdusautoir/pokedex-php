@@ -9,8 +9,6 @@ require_once('../db.php');
 
 $API_URL = "https://pokebuildapi.fr/api/v1/pokemon";
 
-var_dump($_POST);
-
 if (isset($_POST["submit"])) {
     if (!(isset($_POST["pokemon-data"]) && !empty($_POST["pokemon-data"]))) {
         echo "Veuillez remplir le champ";
@@ -58,8 +56,14 @@ if (isset($_POST["submit"])) {
         $sprite = file_get_contents($pokemon->sprite);
 
         if ($image && $sprite) {
-            file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
-            file_put_contents("../public/pokemon_sprites/" . $pokemon->id . ".png", $sprite);
+
+            if (!file_exists("../public/pokemon_images/" . $pokemon->id . ".png",)) {
+                file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
+            }
+
+            if (!file_exists("../public/pokemon_sprites/" . $pokemon->id . ".png")) {
+                file_put_contents("../public/pokemon_sprites/" . $pokemon->id . ".png", $sprite);
+            }
         }
 
         $db->beginTransaction();
@@ -81,7 +85,9 @@ if (isset($_POST["submit"])) {
             $typeInDb = $query->fetch();
 
             if (!$typeInDb) {
-                file_put_contents("../public/type_images/" . $type->name . ".png", file_get_contents($type->image));
+                if (!file_exists("../public/type_images/" . $type->name . ".png")) {
+                    file_put_contents("../public/type_images/" . $type->name . ".png", file_get_contents($type->image));
+                }
 
                 $sql = "INSERT INTO types (name, image) VALUES (:name, :image)";
                 $query = $db->prepare($sql);
