@@ -4,8 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
 require_once('db.php');
 require_once('functions.php');
 
@@ -34,6 +32,16 @@ $query = $db->prepare($sql);
 $query->execute([$pokemon->pokemonId]);
 $types = $query->fetchAll();
 
+$sql = "SELECT * FROM pokemons_evolutions WHERE pokemonId = ?";
+$query = $db->prepare($sql);
+$query->execute([$pokemon->pokemonId]);
+$evolutions = $query->fetchAll();
+
+$sql = "SELECT * FROM pokemons_pre_evolutions WHERE pokemonId = ?";
+$query = $db->prepare($sql);
+$query->execute([$pokemon->pokemonId]);
+$preEvolutions = $query->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -49,18 +57,36 @@ $types = $query->fetchAll();
     <a href="./index.php">Retour</a>
     <h1><?= $pokemon->name ?></h1>
     <img src=".<?= $pokemon->image ?>" alt="Image of <?= $pokemon->name ?>">
-    <p>Types:</p>
-    <ul>
-        <?php foreach ($types as $type) : ?>
-            <li><?= $type->name ?></li>
-        <?php endforeach; ?>
-    </ul>
+    <?php if (count($types) > 0) : ?>
+        <p>Types:</p>
+        <ul>
+            <?php foreach ($types as $type) : ?>
+                <li><?= $type->name ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
     <p>HP : <?= $pokemon->hp ?></p>
     <p>Attack : <?= $pokemon->attack ?></p>
     <p>Defense : <?= $pokemon->defense ?></p>
     <p>Special Attack : <?= $pokemon->special_attack ?></p>
     <p>Special Defense : <?= $pokemon->special_defense ?></p>
     <p>Speed : <?= $pokemon->speed ?></p>
+    <?php if (count($evolutions) > 0) : ?>
+        <p>Evolutions :</p>
+        <ul>
+            <?php foreach ($evolutions as $evolution) : ?>
+                <li><?= $evolution->name ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <?php if (count($preEvolutions) > 0) : ?>
+        <p>Prè évolutions :</p>
+        <ul>
+            <?php foreach ($preEvolutions as $evolution) : ?>
+                <li><?= $evolution->name ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 </body>
 
 </html>

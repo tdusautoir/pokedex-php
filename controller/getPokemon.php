@@ -90,8 +90,6 @@ if (isset($_POST["submit"])) {
                     "image" => "/public/type_images/" . $type->name . ".png",
                 ]);
 
-                // file_put_contents($)
-
                 $typeId = $db->lastInsertId();
             } else {
                 $typeId = $typeInDb->id;
@@ -103,6 +101,32 @@ if (isset($_POST["submit"])) {
                 "pokemonId" => $pokemon->id,
                 "typeId" => $typeId,
             ]);
+        }
+
+        foreach ($pokemon->apiEvolutions as $evolution) {
+            $sql = "SELECT * FROM pokemons_evolutions WHERE name LIKE :name AND pokemonId = :pokemonId AND evolutionPokemonId = :evolutionPokemonId";
+            $query = $db->prepare($sql);
+            $query->execute(["name" => "%" . $evolution->name . "%", "pokemonId" => $pokemon->id, "evolutionPokemonId" => $evolution->pokedexId]);
+            $evolutionInDb = $query->fetch();
+
+            if (!$evolutionInDb) {
+                $sql = "INSERT INTO pokemons_evolutions (name, pokemonId, evolutionPokemonId) VALUES (:name, :pokemonId, :evolutionPokemonId)";
+                $query = $db->prepare($sql);
+                $query->execute(["name" => $evolution->name, "pokemonId" => $pokemon->id, "evolutionPokemonId" => $evolution->pokedexId]);
+            }
+        }
+
+        if ($pokemon->apiPreEvolution) {
+            $sql = "SELECT * FROM pokemons_pre_evolutions WHERE name LIKE :name AND pokemonId = :pokemonId AND evolutionPokemonId = :evolutionPokemonId";
+            $query = $db->prepare($sql);
+            $query->execute(["name" => "%" . $pokemon->apiPreEvolution->name . "%", "pokemonId" => $pokemon->id, "evolutionPokemonId" => $pokemon->apiPreEvolution->pokedexIdd]);
+            $preEvolutionInDb = $query->fetch();
+
+            if (!$preEvolutionInDb) {
+                $sql = "INSERT INTO pokemons_pre_evolutions (name, pokemonId, evolutionPokemonId) VALUES (:name, :pokemonId, :evolutionPokemonId)";
+                $query = $db->prepare($sql);
+                $query->execute(["name" => $pokemon->apiPreEvolution->name, "pokemonId" => $pokemon->id, "evolutionPokemonId" => $pokemon->apiPreEvolution->pokedexIdd]);
+            }
         }
 
         $sql = "INSERT INTO stats (pokemonId, hp, attack, defense, special_attack, special_defense, speed) VALUES (:pokemonId, :hp, :attack, :defense, :special_attack, :special_defense, :speed)";
