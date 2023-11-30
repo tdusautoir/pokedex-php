@@ -66,6 +66,14 @@ if (isset($_POST["submit"])) {
     try {
         $pokemon = json_decode($data);
 
+        $image = file_get_contents($pokemon->image);
+        $sprite = file_get_contents($pokemon->sprite);
+
+        if ($image && $sprite) {
+            file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
+            file_put_contents("../public/pokemon_sprites/" . $pokemon->id . ".png", $sprite);
+        }
+
         $db->beginTransaction();
 
         $sql = "INSERT INTO pokemons (id, name, image, sprite, generation) VALUES (:id, :name, :image, :sprite, :generation)";
@@ -85,12 +93,17 @@ if (isset($_POST["submit"])) {
             $typeInDb = $query->fetch();
 
             if (!$typeInDb) {
+                file_put_contents("../public/type_images/" . $type->name . ".png", file_get_contents($type->image));
+
                 $sql = "INSERT INTO types (name, image) VALUES (:name, :image)";
                 $query = $db->prepare($sql);
                 $query->execute([
                     "name" => $type->name,
                     "image" => "/public/type_images/" . $type->name . ".png",
                 ]);
+
+                // file_put_contents($)
+
                 $typeId = $db->lastInsertId();
             } else {
                 $typeId = $typeInDb->id;
