@@ -12,13 +12,13 @@ $API_URL = "https://pokebuildapi.fr/api/v1/pokemon";
 var_dump($_POST);
 
 if (isset($_POST["submit"])) {
-    if (!(isset($_POST["pokemon-name"]) && !empty($_POST["pokemon-name"])) && !(isset($_POST["pokemon-id"]) && !empty($_POST["pokemon-id"]))) {
-        echo "Veuillez remplir un des champs";
+    if (!(isset($_POST["pokemon-data"]) && !empty($_POST["pokemon-data"]))) {
+        echo "Veuillez remplir le champ";
         die();
     }
 
-    if (isset($_POST["pokemon-name"]) && !empty($_POST["pokemon-name"])) {
-        $pokemonName = $_POST["pokemon-name"];
+    if (isset($_POST["pokemon-data"]) && !empty($_POST["pokemon-data"])) {
+        $pokemonName = $_POST["pokemon-data"];
 
         $sql = "SELECT * FROM pokemons WHERE name LIKE :name LIMIT 1";
         $query = $db->prepare($sql);
@@ -26,41 +26,29 @@ if (isset($_POST["submit"])) {
         $pokemon = $query->fetch();
 
         if ($pokemon) {
-            var_dump($pokemon);
-            die();
-            header("Location: ../index.php?pokemon-id=" . $pokemon->id);
+            header("Location: ../pokemon.php?id=" . $pokemon->id);
             die();
         }
     }
 
-    if (isset($_POST["pokemon-id"]) && !empty($_POST["pokemon-id"])) {
-        $pokemonId = $_POST["pokemon-id"];
+    $pokemonId = $_POST["pokemon-data"];
 
-        $sql = "SELECT * FROM pokemons WHERE id = ? LIMIT 1";
-        $query = $db->prepare($sql);
-        $query->execute([$pokemonId]);
-        $pokemon = $query->fetch();
+    $sql = "SELECT * FROM pokemons WHERE id = ? LIMIT 1";
+    $query = $db->prepare($sql);
+    $query->execute([$pokemonId]);
+    $pokemon = $query->fetch();
 
-        if ($pokemon) {
-            var_dump($pokemon);
-            die();
-            header("Location: ../index.php?pokemon-id=" . $pokemon->id);
-            die();
-        }
+    if ($pokemon) {
+        header("Location: ../pokemon.php?id=" . $pokemon->id);
+        die();
     }
 
-    if (isset($pokemonName)) {
-        $url = $API_URL . "/" . $pokemonName;
-        $data = file_get_contents($url);
-    }
-
-    if (isset($pokemonId) && !$data) {
-        $url = $API_URL . "/" . $pokemonId;
-        $data = file_get_contents($url);
-    }
+    $url = $API_URL . "/" . $_POST["pokemon-data"];
+    $data = file_get_contents($url);
 
     if (!$data) {
         echo "Pokemon introuvable";
+        die();
     }
 
     try {
@@ -131,9 +119,7 @@ if (isset($_POST["submit"])) {
 
         $db->commit();
 
-        var_dump("success");
-        die();
-        header("Location: ../index.php?pokemon-id=" . $pokemon->id);
+        header("Location: ../pokemon.php?id=" . $pokemon->id);
         die();
     } catch (Exception $e) {
         $db->rollback();
