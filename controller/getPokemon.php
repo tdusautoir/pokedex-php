@@ -85,21 +85,22 @@ if (isset($_POST["submit"])) {
             $typeInDb = $query->fetch();
 
             if (!$typeInDb) {
-                $sql = "INSERT INTO types (id, name, image) VALUES (:id, :name, :image)";
+                $sql = "INSERT INTO types (name, image) VALUES (:name, :image)";
                 $query = $db->prepare($sql);
                 $query->execute([
                     "name" => $type->name,
                     "image" => "/public/type_images/" . $type->name . ".png",
                 ]);
+                $typeId = $db->lastInsertId();
             } else {
-                $type = $typeInDb;
+                $typeId = $typeInDb->id;
             }
 
             $sql = "INSERT INTO pokemons_types (pokemonId, typeId) VALUES (:pokemonId, :typeId)";
             $query = $db->prepare($sql);
             $query->execute([
                 "pokemonId" => $pokemon->id,
-                "typeId" => $type->id,
+                "typeId" => $typeId,
             ]);
         }
 
