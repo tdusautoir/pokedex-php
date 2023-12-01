@@ -1,0 +1,5 @@
+.DS_Store
+*/.DS_Store
+/public/pokemon_images/*.png
+/public/pokemon_sprites/*.png
+/public/type_images/*.png

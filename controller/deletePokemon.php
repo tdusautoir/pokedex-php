@@ -1,11 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once('../functions.php');
 require_once('../db.php');
+
+init_php_session();
 
 if (isset($_POST["submit"])) {
     if (!(isset($_POST["pokemonId"]) && !empty($_POST["pokemonId"]))) {
@@ -37,9 +35,13 @@ if (isset($_POST["submit"])) {
         $query->execute([$_POST["pokemonId"]]);
 
         $db->commit();
+
+        create_flash_message("pokemon_deleted", "Le pokémon a bien été supprimé", FLASH_SUCCESS);
         header("Location: ../index.php");
+        die();
     } catch (Exception $e) {
-        echo "erreur lors de la suppression";
+        create_flash_message("error", "Une erreur est survenue", FLASH_ERROR);
+        header("Location: ../index.php");
         die();
     }
 }

@@ -1,11 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once('db.php');
 require_once('functions.php');
+
+init_php_session();
 
 if (!isset($_GET)) {
     header('Location: index.php');
@@ -50,6 +48,8 @@ $preEvolutions = $query->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="./public/js/script.js"></script>
+    <link ref="shortcut icon" href=".<?= $pokemon->sprite ?>" type="image/x-icon">
     <link rel="stylesheet" href="./public/reset.css">
     <link rel="stylesheet" href="./public/style.css">
     <title>Pokedex - <?= $pokemon->name ?></title>
@@ -57,6 +57,7 @@ $preEvolutions = $query->fetchAll();
 
 <body>
     <main>
+        <?php include('./components/flashMessage.php'); ?>
         <?php include('./components/navBar.php'); ?>
         <a href="./index.php">Retour</a>
         <h1><?= $pokemon->name ?></h1>
@@ -91,7 +92,13 @@ $preEvolutions = $query->fetchAll();
                             <?php foreach ($evolutions as $evolution) : ?>
                                 <form action="./controller/getPokemon.php" method="POST">
                                     <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
-                                    <button type="submit" name="submit"><?= $evolution->name ?></button>
+                                    <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
+                                        <button type="submit" name="submit">
+                                            <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
+                                            <?= $evolution->name ?></button>
+                                    <?php else : ?>
+                                        <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
+                                    <?php endif; ?>
                                 </form>
                             <?php endforeach; ?>
                         </ul>
@@ -102,7 +109,13 @@ $preEvolutions = $query->fetchAll();
                             <?php foreach ($preEvolutions as $evolution) : ?>
                                 <form action="./controller/getPokemon.php" method="POST">
                                     <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
-                                    <button type="submit" name="submit"><?= $evolution->name ?></button>
+                                    <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
+                                        <button type="submit" name="submit">
+                                            <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
+                                            <?= $evolution->name ?></button>
+                                    <?php else : ?>
+                                        <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
+                                    <?php endif; ?>
                                 </form>
                             <?php endforeach; ?>
                         </ul>

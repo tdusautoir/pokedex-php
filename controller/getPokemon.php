@@ -1,11 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once('../functions.php');
 require_once('../db.php');
+
+init_php_session();
 
 $API_URL = "https://pokebuildapi.fr/api/v1/pokemon";
 
@@ -45,7 +43,8 @@ if (isset($_POST["submit"])) {
     $data = file_get_contents($url);
 
     if (!$data) {
-        echo "Pokemon introuvable";
+        create_flash_message("pokemon_not_found", "Le pokémon n'a pas été trouvé", FLASH_WARNING);
+        header("Location: ../index.php");
         die();
     }
 
@@ -56,7 +55,6 @@ if (isset($_POST["submit"])) {
         $sprite = file_get_contents($pokemon->sprite);
 
         if ($image && $sprite) {
-
             if (!file_exists("../public/pokemon_images/" . $pokemon->id . ".png",)) {
                 file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
             }
@@ -149,10 +147,13 @@ if (isset($_POST["submit"])) {
 
         $db->commit();
 
+        create_flash_message("pokemon_saved", "Pokemon enregistré !", FLASH_SUCCESS);
         header("Location: ../pokemon.php?id=" . $pokemon->id);
         die();
     } catch (Exception $e) {
         $db->rollback();
-        echo "Une erreur est survenue";
+        create_flash_message("error", "Une erreur est survenue", FLASH_ERROR);
+        header("Location: ../index.php");
+        die();
     }
 }
