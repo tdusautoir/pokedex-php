@@ -1,11 +1,22 @@
 <?php
 
+require_once('functions.php');
 require_once('db.php');
 
-$sql = "SELECT * FROM pokemons";
-$query = $db->prepare($sql);
-$query->execute();
-$pokemons = $query->fetchAll();
+init_php_session();
+
+if ($_GET["generationId"]) {
+    $sql = "SELECT * FROM pokemons WHERE generation = ?";
+    $query = $db->prepare($sql);
+    $query->execute([$_GET["generationId"]]);
+    $pokemons = $query->fetchAll();
+} else {
+    $sql = "SELECT * FROM pokemons";
+    $query = $db->prepare($sql);
+    $query->execute();
+    $pokemons = $query->fetchAll();
+}
+
 
 ?>
 
@@ -15,12 +26,14 @@ $pokemons = $query->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="./public/js/script.js"></script>
     <link rel="stylesheet" href="./public/reset.css">
     <link rel="stylesheet" href="./public/style.css">
     <title>Pokedex</title>
 </head>
 
 <body>
+    <?php include('./components/flashMessage.php'); ?>
     <?php include('./components/navBar.php'); ?>
 
     <div class="pokedex">
