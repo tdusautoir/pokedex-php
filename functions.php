@@ -119,7 +119,7 @@ function build_url(string $param): string
 }
 
 
-function remove_from_url(string $param_to_remove): string
+function remove_from_current_url(string $param_to_remove): string
 {
     $currentURL = $_SERVER['REQUEST_URI'];
 
@@ -147,4 +147,35 @@ function remove_from_url(string $param_to_remove): string
     }
 
     return $currentURL;
+}
+
+function remove_from_url(string $url, string $param_to_remove)
+{
+    $urlParts = parse_url($url);
+
+    if (isset($urlParts['query'])) {
+        parse_str($urlParts['query'], $queryParams);
+
+        if (isset($queryParams[$param_to_remove])) {
+            unset($queryParams[$param_to_remove]);
+
+            $newQuery = http_build_query($queryParams);
+
+            $newURL = $urlParts['path'];
+            if ($newQuery !== '') {
+                $newURL .= '?' . $newQuery;
+            }
+
+            return $newURL;
+        }
+    }
+
+    return $url;
+}
+
+// Check if a value is a integer (
+// "23" return true, 23 return true, 23.4 return false
+function isInteger($input)
+{
+    return (ctype_digit(strval($input)));
 }

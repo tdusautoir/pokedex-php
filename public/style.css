@@ -144,11 +144,12 @@ header.sticky .filterBar {
 }
 
 .filterBar .current-type {
-    width: 20px;
+    width: 26px;
 }
 
 .filterBar a,
-.filterBar button {
+.filterBar button,
+.pokedex-pagination a {
     border: none;
     display: flex;
     justify-content: center;
@@ -170,6 +171,9 @@ header.sticky .filterBar {
     border-bottom-right-radius: 9999px;
 }
 
+.pokedex-pagination a:focus,
+.pokedex-pagination a:hover,
+.pokedex-pagination a.active,
 .filterBar a:focus,
 .filterBar a:hover,
 .filterBar a.active,
@@ -191,6 +195,18 @@ header.sticky .filterBar {
     gap: 10px;
     margin: 0 auto;
     margin-top: 140px;
+}
+
+.pokedex-pagination {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pokedex-pagination a {
+    background-color: rgb(240, 240, 240);
 }
 
 .pokemon-card {

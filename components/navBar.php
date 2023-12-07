@@ -37,12 +37,12 @@ $noParam = count($_GET) === 0;
         <button class="filterby">filtrer</button>
         <a href="./index.php" class="<?= $noParam ? "active" : '' ?>">Tout</a>
         <?php foreach ($generations as $generation) : ?>
-            <a href="<?= build_url("generationId=" . $generation->generation) ?>" class="<?= isset($_GET['generationId']) ? ($generation->generation === $_GET['generationId'] ? "active" : "") : "" ?>">generation <?= $generation->generation ?></a>
+            <a href="<?= remove_from_url(build_url("generationId=" . $generation->generation), "page") ?>" class="<?= isset($_GET['generationId']) ? ($generation->generation === $_GET['generationId'] ? "active" : "") : "" ?>">generation <?= $generation->generation ?></a>
         <?php endforeach; ?>
         <select class="<?= isset($_GET['typeId']) ? "active" : "" ?>" name="typeId" id="select-type-id">
-            <option value="<?= remove_from_url("typeId") ?>">Tous les types</option>
+            <option value="<?= remove_from_current_url("typeId") ?>">Tous les types</option>
             <?php foreach ($allTypes as $type) : ?>
-                <option value="<?= build_url("typeId=" . $type->id) ?>" <?= isset($_GET['typeId']) ? ($type->id === $_GET['typeId'] ? "selected=selected" : "") : "" ?>><?= $type->name ?></option>
+                <option value="<?= remove_from_url(build_url("typeId=" . $type->id), "page") ?>" <?= isset($_GET['typeId']) ? ($type->id === $_GET['typeId'] ? "selected=selected" : "") : "" ?>><?= $type->name ?></option>
             <?php endforeach; ?>
         </select>
         <?php if (isset($currentType)) : ?>
