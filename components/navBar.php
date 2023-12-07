@@ -34,6 +34,7 @@ $noParam = count($_GET) === 0;
         </form>
     </nav>
     <div class="filterBar">
+        <button class="filterby">filtrer</button>
         <a href="./index.php" class="<?= $noParam ? "active" : '' ?>">Tout</a>
         <?php foreach ($generations as $generation) : ?>
             <a href="<?= build_url("generationId=" . $generation->generation) ?>" class="<?= isset($_GET['generationId']) ? ($generation->generation === $_GET['generationId'] ? "active" : "") : "" ?>">generation <?= $generation->generation ?></a>
@@ -44,9 +45,8 @@ $noParam = count($_GET) === 0;
                 <option value="<?= build_url("typeId=" . $type->id) ?>" <?= isset($_GET['typeId']) ? ($type->id === $_GET['typeId'] ? "selected=selected" : "") : "" ?>><?= $type->name ?></option>
             <?php endforeach; ?>
         </select>
-        <?php if ($currentType) : ?>
+        <?php if (isset($currentType)) : ?>
             <img class="current-type" src=".<?= $currentType->image ?>" />
         <?php endif; ?>
-        <img src="" />
     </div>
 </header>

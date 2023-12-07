@@ -59,74 +59,76 @@ $preEvolutions = $query->fetchAll();
     <main>
         <?php include('./components/flashMessage.php'); ?>
         <?php include('./components/navBar.php'); ?>
-        <a href="./index.php">Retour</a>
-        <h1><?= $pokemon->name ?></h1>
-        <div class="pokemon">
-            <div class="pokemon-header">
-                <img src=".<?= $pokemon->image ?>" alt="Image of <?= $pokemon->name ?>">
-            </div>
-            <div class="pokemon-stat">
-                <div class="pokemon-stat-types">
-                    <?php if (count($types) > 0) : ?>
-                        <h2>Types:</h2>
-                        <ul>
-                            <?php foreach ($types as $type) : ?>
-                                <li><img src=".<?= $type->image ?>" />
-                                    <a href="./index.php?typeId="><?= $type->name ?></a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
+        <div class="pokemon-page">
+            <a href="./index.php">Retour</a>
+            <h1><?= $pokemon->name ?></h1>
+            <div class="pokemon">
+                <div class="pokemon-header">
+                    <img src=".<?= $pokemon->image ?>" alt="Image of <?= $pokemon->name ?>">
                 </div>
-                <h2>Statistiques :</h2>
-                <p>HP : <?= $pokemon->hp ?></p>
-                <p>Attack : <?= $pokemon->attack ?></p>
-                <p>Defense : <?= $pokemon->defense ?></p>
-                <p>Special Attack : <?= $pokemon->special_attack ?></p>
-                <p>Special Defense : <?= $pokemon->special_defense ?></p>
-                <p>Speed : <?= $pokemon->speed ?></p>
-                <div class="pokemon-evolutions">
-                    <?php if (count($evolutions) > 0) : ?>
-                        <h2>Evolutions :</h2>
-                        <ul>
-                            <?php foreach ($evolutions as $evolution) : ?>
-                                <form action="./controller/getPokemon.php" method="POST">
-                                    <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
-                                    <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
-                                        <button type="submit" name="submit">
-                                            <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
-                                            <?= $evolution->name ?></button>
-                                    <?php else : ?>
-                                        <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
-                                    <?php endif; ?>
-                                </form>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                    <?php if (count($preEvolutions) > 0) : ?>
-                        <h2>Pré-évolutions :</h2>
-                        <ul>
-                            <?php foreach ($preEvolutions as $evolution) : ?>
-                                <form action="./controller/getPokemon.php" method="POST">
-                                    <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
-                                    <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
-                                        <button type="submit" name="submit">
-                                            <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
-                                            <?= $evolution->name ?></button>
-                                    <?php else : ?>
-                                        <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
-                                    <?php endif; ?>
-                                </form>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
+                <div class="pokemon-stat">
+                    <div class="pokemon-stat-types">
+                        <?php if (count($types) > 0) : ?>
+                            <h2>Types:</h2>
+                            <ul>
+                                <?php foreach ($types as $type) : ?>
+                                    <li><img src=".<?= $type->image ?>" />
+                                        <a href="./index.php?typeId="><?= $type->name ?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
+                    <h2>Statistiques :</h2>
+                    <p>HP : <?= $pokemon->hp ?></p>
+                    <p>Attack : <?= $pokemon->attack ?></p>
+                    <p>Defense : <?= $pokemon->defense ?></p>
+                    <p>Special Attack : <?= $pokemon->special_attack ?></p>
+                    <p>Special Defense : <?= $pokemon->special_defense ?></p>
+                    <p>Speed : <?= $pokemon->speed ?></p>
+                    <div class="pokemon-evolutions">
+                        <?php if (count($evolutions) > 0) : ?>
+                            <h2>Evolutions :</h2>
+                            <ul>
+                                <?php foreach ($evolutions as $evolution) : ?>
+                                    <form action="./controller/getPokemon.php" method="POST">
+                                        <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
+                                        <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
+                                            <button type="submit" name="submit">
+                                                <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
+                                                <?= $evolution->name ?></button>
+                                        <?php else : ?>
+                                            <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
+                                        <?php endif; ?>
+                                    </form>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                        <?php if (count($preEvolutions) > 0) : ?>
+                            <h2>Pré-évolutions :</h2>
+                            <ul>
+                                <?php foreach ($preEvolutions as $evolution) : ?>
+                                    <form action="./controller/getPokemon.php" method="POST">
+                                        <input type="hidden" name="pokemon-data" value="<?= $evolution->evolutionPokemonId ?>">
+                                        <?php if (file_exists("./public/pokemon_sprites/$evolution->evolutionPokemonId.png")) : ?>
+                                            <button type="submit" name="submit">
+                                                <img src="./public/pokemon_sprites/<?= $evolution->evolutionPokemonId ?>.png" alt="Image of <?= $evolution->name ?>">
+                                                <?= $evolution->name ?></button>
+                                        <?php else : ?>
+                                            <button type="submit" name="submit" class="no-img"><?= $evolution->name ?></button>
+                                        <?php endif; ?>
+                                    </form>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
+            <form action="./controller/deletePokemon.php" method="POST" class="pokemom-delete-form">
+                <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
+                <button type="submit" name="submit">Supprimer</button>
+            </form>
         </div>
-        <form action="./controller/deletePokemon.php" method="POST" class="pokemom-delete-form">
-            <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
-            <button type="submit" name="submit">Supprimer</button>
-        </form>
     </main>
 </body>
 

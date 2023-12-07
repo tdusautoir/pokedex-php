@@ -18,3 +18,6 @@ document.getElementById('select-type-id').addEventListener('change', function ()
     window.location.href = selectTypeValue;
 })
 
+document.querySelector('.filterby').addEventListener('click', function () {
+    document.querySelector('.filterBar').classList.toggle('open');
+})

@@ -147,7 +147,9 @@ header.sticky .filterBar {
     width: 20px;
 }
 
-.filterBar a {
+.filterBar a,
+.filterBar button {
+    border: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -170,17 +172,25 @@ header.sticky .filterBar {
 
 .filterBar a:focus,
 .filterBar a:hover,
-.filterBar a.active {
+.filterBar a.active,
+.filterBar button:focus,
+.filterBar button:hover,
+.filterBar button.active {
     border: none;
     outline: none;
     box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(135, 135, 135);
 }
 
+.filterBar button.filterby {
+    display: none;
+}
+
 .pokedex {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 0 auto;
     margin-top: 140px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 100px;
 }
 
 .pokemon-card {
@@ -193,12 +203,14 @@ header.sticky .filterBar {
     padding: 20px;
     border-radius: 2px;
     gap: 10px;
+    width: 100%;
+    font-size: 0.8rem;
     transition: all 0.2s ease-in-out;
 }
 
 .pokemon-card img {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
 }
 
 .pokemon-card:focus,
@@ -304,5 +316,85 @@ header.sticky .filterBar {
     100% {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .pokedex {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (max-width: 940px) {
+    .pokedex {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .pokedex {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filterBar * {
+        display: none !important;
+    }
+
+    .filterBar.open * {
+        display: flex !important;
+    }
+
+    .filterBar button.filterby {
+        display: block !important;
+    }
+
+    .filterBar {
+        flex-direction: column;
+        border-radius: 8px;
+        padding: 10px;
+        align-items: center;
+    }
+
+    .filterBar a,
+    .filterBar select {
+        width: 100%;
+        border-radius: 4px;
+        height: 40px;
+    }
+
+    .filterBar a:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .pokemon-page {
+        margin-top: 120px;
+    }
+
+    .pokemon {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 475px) {
+    body {
+        padding: 20px;
+    }
+
+    .pokemon-card {
+        font-size: 0.6rem;
+    }
+
+    .pokemon-card img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pokemon-header img {
+        width: 275px;
+        height: 275px;
     }
 }
