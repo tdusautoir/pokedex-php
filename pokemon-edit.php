@@ -59,14 +59,20 @@ $preEvolutions = $query->fetchAll();
     <main>
         <?php include('./components/flashMessage.php'); ?>
         <?php include('./components/navBar.php'); ?>
-        <form class="pokemon-edit-form" method="POST" action="./controller/updatePokemon.php">
+        <form class="pokemon-edit-form" method="POST" action="./controller/updatePokemon.php" enctype="multipart/form-data">
             <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
             <div class="pokemon-page">
                 <a href="./index.php">Retour</a>
                 <input type="text" name="name" value="<?= $pokemon->name ?>" />
                 <div class="pokemon">
                     <div class="pokemon-header">
-                        <img src=".<?= $pokemon->image ?>" alt="Image of <?= $pokemon->name ?>">
+                        <label for="picture-import-input">
+                            <div class="picture-import">
+                                <p>Importez une image</p>
+                                <span id="picture-import-name"></span>
+                            </div>
+                            <input id="picture-import-input" type="file" accept="image/png, image/jpeg" name="pokemon-picture">
+                        </label>
                     </div>
                     <div class="pokemon-stat">
                         <div class="pokemon-stat-types">

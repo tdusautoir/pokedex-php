@@ -179,3 +179,12 @@ function isInteger($input)
 {
     return (ctype_digit(strval($input)));
 }
+
+function imageResize($newImageWidth, $newImageHeight, $imageSrc, $imageWidth, $imageHeight) //redimensioner une image et la copier dans un dossier
+{
+    $newImageLayer = imagecreatetruecolor($newImageWidth, $newImageHeight); //créer l'images et ses couleurs selon sa nouvelle hauteur et largeur
+
+    imagecopyresampled($newImageLayer, $imageSrc, 0, 0, 0, 0, $newImageWidth, $newImageHeight, $imageWidth, $imageHeight); //assembler l'image selon sa nouvelle hauteur et largeur et la copier dans un dossier
+
+    return $newImageLayer; //retourne true si l'opération est un succés.
+}

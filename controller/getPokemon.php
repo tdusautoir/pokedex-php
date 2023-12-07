@@ -56,13 +56,22 @@ if (isset($_POST["submit"])) {
         $sprite = file_get_contents($pokemon->sprite);
 
         if ($image && $sprite) {
-            if (!file_exists("../public/pokemon_images/" . $pokemon->id . ".png",)) {
-                file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
-            }
+            file_put_contents("../public/pokemon_images/" . $pokemon->id . ".png", $image);
 
             if (!file_exists("../public/pokemon_sprites/" . $pokemon->id . ".png")) {
                 file_put_contents("../public/pokemon_sprites/" . $pokemon->id . ".png", $sprite);
             }
+        }
+
+        // check if exist with pokedex id
+        $sql = "SELECT * FROM pokemons WHERE id = ? LIMIT 1";
+        $query = $db->prepare($sql);
+        $query->execute([$pokemon->id]);
+        $pokemonExist = $query->fetch();
+
+        if ($pokemonExist) {
+            header("Location: ../pokemon.php?id=" . $pokemon->id);
+            die();
         }
 
         $db->beginTransaction();

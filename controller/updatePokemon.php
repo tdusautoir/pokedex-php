@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once('../functions.php');
 require_once('../db.php');
 
@@ -12,6 +16,8 @@ if (isset($_POST["save-edit"])) {
         die();
     }
 
+    $pokemonId = $_POST["pokemonId"];
+
     if (!(isset($_POST["name"]) && !empty($_POST["name"]))) {
         create_flash_message("no id", "Aucun nom spécifié", FLASH_ERROR);
         header("Location: ../index.php");
@@ -19,6 +25,57 @@ if (isset($_POST["save-edit"])) {
     }
 
     try {
+        if (isset($_FILES['pokemon-picture'])) {
+            if (!(is_uploaded_file($_FILES['pokemon-picture']['tmp_name']))) {
+                header("location: ../pokemon.php?id=" . $pokemonId);
+                create_flash_message("pokemon_picture_error", "Une erreur est survenue, veuillez réessayer", FLASH_ERROR);
+                exit();
+            }
+
+            if (!($_FILES['pokemon-picture']['size'] < 2000000)) {
+                header("location: ../pokemon.php?id=" . $pokemonId);
+                create_flash_message("pokemon_picture_error", "La photo doit être inférieure à 2Mo.", FLASH_ERROR);
+                exit();
+            }
+
+            $uploadfile = $_FILES['pokemon-picture']['tmp_name'];
+            $sourceProperties = getimagesize($uploadfile);
+            $newFileName = $pokemonId;
+            $uploaddir = dirname(__FILE__) . "/../public/pokemon_images/";
+            $ext = pathinfo($_FILES['pokemon-picture']['name'], PATHINFO_EXTENSION);
+            $image_width = $sourceProperties[0];
+            $image_height = $sourceProperties[1];
+            $imageType = $sourceProperties[2];
+            $newImage_width = $image_width / $image_height * 500;
+            $newImage_height = $image_height / $image_height * 500;
+
+            switch ($imageType) {
+                case IMAGETYPE_PNG: //$imageType == 3
+                    $imageSrc = imagecreatefrompng($uploadfile);
+                    $tmp = imageResize($newImage_width, $newImage_height, $imageSrc, $image_width, $image_height);
+                    imagepng($tmp, $uploaddir . $newFileName . "." . $ext);
+                    break;
+
+                case IMAGETYPE_JPEG: //$imageType == 2
+                    $imageSrc = imagecreatefromjpeg($uploadfile);
+                    $tmp = imageResize($newImage_width, $newImage_height, $imageSrc, $image_width, $image_height);
+                    imagejpeg($tmp, $uploaddir . $newFileName . "." . $ext);
+                    break;
+
+                case IMAGETYPE_GIF: //$imageType == 1
+                    $imageSrc = imagecreatefromgif($uploadfile);
+                    $tm = imageResize($newImage_width, $newImage_height, $imageSrc, $image_width, $image_height);
+                    imagegif($tmp, $uploaddir . $newFileName . "." . $ext);
+                    break;
+
+                default:
+                    header("location: ../pokemon.php?id=" . $pokemonId);
+                    create_flash_message("pokemon_picture_error", "Le type de votre image doit être jpeg ou png.", FLASH_ERROR);
+                    exit();
+                    break;
+            }
+        }
+
         $sql = "UPDATE pokemons SET name = ? WHERE id = ?";
         $query = $db->prepare($sql);
         $query->execute([$_POST["name"], $_POST["pokemonId"]]);

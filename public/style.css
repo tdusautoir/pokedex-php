@@ -95,6 +95,7 @@ header.sticky .filterBar {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     transition: all 0.2s ease-in-out;
+    background-color: rgb(240, 240, 240);
 }
 
 .navBar button {
@@ -109,10 +110,10 @@ header.sticky .filterBar {
     align-items: center;
     padding: 20px;
     cursor: pointer;
-    background-color: #ffffff;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     transition: all 0.2s ease-in-out;
+    background-color: rgb(240, 240, 240);
 }
 
 .navBar input:focus-visible,
@@ -121,7 +122,7 @@ header.sticky .filterBar {
 .navBar input:hover {
     border: none;
     outline: none;
-    box-shadow: 0 0 0 3px white, 0 0 0 5px rgb(135, 135, 135);
+    box-shadow: 0 0 0 3px rgb(240, 240, 240), 0 0 0 5px rgb(135, 135, 135);
 }
 
 .filterBar {
@@ -133,14 +134,20 @@ header.sticky .filterBar {
 .filterBar select {
     border: none;
     padding: 0px 4px;
+    border-top-right-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-color: rgb(240, 240, 240);
 }
 
 .filterBar select:focus-visible,
 .filterBar select:focus,
+.filterBar select:hover,
 .filterBar select.active {
     border: none;
     outline: none;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(135, 135, 135);
+    box-shadow: 0 0 0 2px rgb(240, 240, 240), 0 0 0 4px rgb(135, 135, 135);
 }
 
 .filterBar .current-type {
@@ -158,17 +165,12 @@ header.sticky .filterBar {
     transition: all 0.2s ease-in-out;
     width: fit-content;
     padding: 6px 14px;
+    background-color: rgb(240, 240, 240);
 }
 
-
-.filterBar a:first-child {
+.filterBar button+a {
     border-top-left-radius: 9999px;
     border-bottom-left-radius: 9999px;
-}
-
-.filterBar a:last-child {
-    border-top-right-radius: 9999px;
-    border-bottom-right-radius: 9999px;
 }
 
 .pokedex-pagination a:focus,
@@ -182,7 +184,7 @@ header.sticky .filterBar {
 .filterBar button.active {
     border: none;
     outline: none;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(135, 135, 135);
+    box-shadow: 0 0 0 2px rgb(240, 240, 240), 0 0 0 4px rgb(135, 135, 135);
 }
 
 .filterBar button.filterby {
@@ -200,9 +202,21 @@ header.sticky .filterBar {
 .pokedex-pagination {
     margin-top: 20px;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pokedex-pagination-pages {
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+.pokedex-pagination-result {
+    color: gray;
 }
 
 .pokedex-pagination a {
@@ -262,6 +276,7 @@ header.sticky .filterBar {
     border-radius: 9999px;
     padding: 10px 20px;
     cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .pokemon-page .actions button[name="save-edit"] {
@@ -305,9 +320,14 @@ header.sticky .filterBar {
     margin-bottom: 20px;
 }
 
-.pokemon-evolutions ul:not(:last-child) {
+.pokemon-evolutions ul {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
+}
+
+.pokemon-evolutions ul:not(:last-child) {
     margin-bottom: 20px;
 }
 
@@ -340,6 +360,27 @@ header.sticky .filterBar {
     display: block;
     font-size: 2rem;
     width: 170px;
+}
+
+.pokemon-edit-form .picture-import {
+    display: flex;
+    width: 400px;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgb(196, 196, 196);
+    border-radius: 5px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pokemon-edit-form #picture-import-name {
+    font-size: 0.8rem;
+    color: gray;
+}
+
+.pokemon-edit-form #picture-import-input {
+    display: none;
 }
 
 @keyframes notif {

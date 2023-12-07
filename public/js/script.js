@@ -21,3 +21,15 @@ document.getElementById('select-type-id').addEventListener('change', function ()
 document.querySelector('.filterby').addEventListener('click', function () {
     document.querySelector('.filterBar').classList.toggle('open');
 })
+
+
+const input = document.getElementById("picture-import-input");
+const imageName = document.getElementById("picture-import-name");
+
+if (input && imageName) {
+    input.addEventListener("change", (e) => {
+        let inputImage = e.target.files[0];
+
+        imageName.innerText = inputImage.name;
+    })
+}
