@@ -51,9 +51,11 @@ if (isset($_GET["typeId"]) && isset($_GET["generationId"])) {
     $query->execute();
     $totalElements = $query->fetchColumn();
 } else if (isset($_GET["typeId"])) {
-    $sql = "SELECT * FROM `types` INNER JOIN pokemons_types ON pokemons_types.typeId = types.id INNER JOIN pokemons ON pokemons_types.pokemonId = pokemons.id WHERE typeId = :typeId";
+    $sql = "SELECT * FROM `types` INNER JOIN pokemons_types ON pokemons_types.typeId = types.id INNER JOIN pokemons ON pokemons_types.pokemonId = pokemons.id WHERE typeId = :typeId  LIMIT :offset, :elementsOnPage";
     $query = $db->prepare($sql);
     $query->bindValue(':typeId', $_GET["typeId"], PDO::PARAM_INT);
+    $query->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $query->bindValue(':elementsOnPage', $elementsOnPage, PDO::PARAM_INT);
     $query->execute();
     $pokemons = $query->fetchAll();
 

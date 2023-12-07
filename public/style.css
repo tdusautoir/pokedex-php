@@ -395,6 +395,40 @@ header.sticky .filterBar {
     }
 }
 
+@media screen and (max-width: 1500px) {
+    .filterBar.resize-1500 * {
+        display: none !important;
+    }
+
+    .filterBar.resize-1500.open * {
+        display: flex !important;
+    }
+
+    .filterBar.resize-1500 button.filterby {
+        display: block !important;
+        border-radius: 4px;
+    }
+
+    .filterBar.resize-1500 {
+        flex-direction: column;
+        border-radius: 8px;
+        padding: 10px;
+        align-items: center;
+    }
+
+    .filterBar.resize-1500 a,
+    .filterBar.resize-1500 select {
+        width: 100%;
+        border-radius: 4px;
+        height: 40px;
+    }
+
+    .filterBar.resize-1500 a:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .pokedex {
         grid-template-columns: repeat(4, 1fr);
@@ -423,6 +457,7 @@ header.sticky .filterBar {
 
     .filterBar button.filterby {
         display: block !important;
+        border-radius: 4px;
     }
 
     .filterBar {

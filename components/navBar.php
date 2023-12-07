@@ -33,7 +33,7 @@ $noParam = count($_GET) === 0;
             <button type="submit" name="submit">Rechercher</button>
         </form>
     </nav>
-    <div class="filterBar">
+    <div class="filterBar <?= count($generations) > 5 ? "resize-1500" : '' ?>">
         <button class="filterby">filtrer</button>
         <a href="./index.php" class="<?= $noParam ? "active" : '' ?>">Tout</a>
         <?php foreach ($generations as $generation) : ?>

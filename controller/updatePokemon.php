@@ -25,7 +25,7 @@ if (isset($_POST["save-edit"])) {
     }
 
     try {
-        if (isset($_FILES['pokemon-picture'])) {
+        if (isset($_FILES['pokemon-picture']['name']) && !empty($_FILES['pokemon-picture']['name'])) {
             if (!(is_uploaded_file($_FILES['pokemon-picture']['tmp_name']))) {
                 header("location: ../pokemon.php?id=" . $pokemonId);
                 create_flash_message("pokemon_picture_error", "Une erreur est survenue, veuillez réessayer", FLASH_ERROR);
