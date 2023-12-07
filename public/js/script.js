@@ -9,3 +9,12 @@ window.addEventListener('scroll', function () {
     const header = document.querySelector('header');
     header.classList.toggle("sticky", window.scrollY > 0);
 });
+
+document.getElementById('select-type-id').addEventListener('change', function () {
+    const selectType = document.getElementById('select-type-id');
+
+    const selectTypeValue = selectType.options[selectType.selectedIndex].value;
+
+    window.location.href = selectTypeValue;
+})
+

@@ -5,10 +5,20 @@ require_once('db.php');
 
 init_php_session();
 
-if ($_GET["generationId"]) {
+if ($_GET["typeId"] && $_GET["generationId"]) {
+    $sql = "SELECT * FROM `types` INNER JOIN pokemons_types ON pokemons_types.typeId = types.id INNER JOIN pokemons ON pokemons_types.pokemonId = pokemons.id WHERE typeId = ? ANd generation = ?";
+    $query = $db->prepare($sql);
+    $query->execute([$_GET["typeId"], $_GET["generationId"]]);
+    $pokemons = $query->fetchAll();
+} else if ($_GET["generationId"]) {
     $sql = "SELECT * FROM pokemons WHERE generation = ?";
     $query = $db->prepare($sql);
     $query->execute([$_GET["generationId"]]);
+    $pokemons = $query->fetchAll();
+} else if ($_GET["typeId"]) {
+    $sql = "SELECT * FROM `types` INNER JOIN pokemons_types ON pokemons_types.typeId = types.id INNER JOIN pokemons ON pokemons_types.pokemonId = pokemons.id WHERE typeId = ?";
+    $query = $db->prepare($sql);
+    $query->execute([$_GET["typeId"]]);
     $pokemons = $query->fetchAll();
 } else {
     $sql = "SELECT * FROM pokemons";
@@ -37,6 +47,9 @@ if ($_GET["generationId"]) {
     <?php include('./components/navBar.php'); ?>
 
     <div class="pokedex">
+        <?php if (count($pokemons) === 0) : ?>
+            <h2>Aucun pokémon trouvé</h2>
+        <?php endif; ?>
         <?php foreach ($pokemons as $pokemon) : ?>
             <a href="./pokemon.php?id=<?= $pokemon->id ?>" class="pokemon-card">
                 <h2>n°<?= $pokemon->id ?> - <?= $pokemon->name ?></h2>

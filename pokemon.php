@@ -72,7 +72,7 @@ $preEvolutions = $query->fetchAll();
                         <ul>
                             <?php foreach ($types as $type) : ?>
                                 <li><img src=".<?= $type->image ?>" />
-                                    <p><?= $type->name ?></p>
+                                    <a href="./index.php?typeId="><?= $type->name ?></a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

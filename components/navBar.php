@@ -11,15 +11,19 @@ $query = $db->prepare($sql);
 $query->execute();
 $generations = $query->fetchAll();
 
-$noSelectedGeneration = true;
-if (isset($_GET['generationId'])) {
-    foreach ($generations as $generation) {
-        if ($generation->generation === $_GET['generationId']) {
-            $noSelectedGeneration = false;
-        }
+$sql = "SELECT * FROM types";
+$query = $db->prepare($sql);
+$query->execute();
+$allTypes = $query->fetchAll();
+
+$currentType = null;
+foreach ($allTypes as $type) {
+    if (isset($_GET['typeId']) && $type->id === $_GET['typeId']) {
+        $currentType = $type;
     }
 }
 
+$noParam = count($_GET) === 0;
 ?>
 
 <header>
@@ -30,9 +34,19 @@ if (isset($_GET['generationId'])) {
         </form>
     </nav>
     <div class="filterBar">
-        <a href="./index.php" class="<?= $noSelectedGeneration ? "active" : '' ?>">Tout</a>
+        <a href="./index.php" class="<?= $noParam ? "active" : '' ?>">Tout</a>
         <?php foreach ($generations as $generation) : ?>
-            <a href="./index.php?generationId=<?= $generation->generation ?>" class="<?= $generation->generation === $_GET['generationId'] ? "active" : "" ?>">generation <?= $generation->generation ?></a>
+            <a href="<?= build_url("generationId=" . $generation->generation) ?>" class="<?= isset($_GET['generationId']) ? ($generation->generation === $_GET['generationId'] ? "active" : "") : "" ?>">generation <?= $generation->generation ?></a>
         <?php endforeach; ?>
+        <select class="<?= isset($_GET['typeId']) ? "active" : "" ?>" name="typeId" id="select-type-id">
+            <option value="<?= remove_from_url("typeId") ?>">Tous les types</option>
+            <?php foreach ($allTypes as $type) : ?>
+                <option value="<?= build_url("typeId=" . $type->id) ?>" <?= isset($_GET['typeId']) ? ($type->id === $_GET['typeId'] ? "selected=selected" : "") : "" ?>><?= $type->name ?></option>
+            <?php endforeach; ?>
+        </select>
+        <?php if ($currentType) : ?>
+            <img class="current-type" src=".<?= $currentType->image ?>" />
+        <?php endif; ?>
+        <img src="" />
     </div>
 </header>

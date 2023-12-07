@@ -130,6 +130,23 @@ header.sticky .filterBar {
     gap: 10px;
 }
 
+.filterBar select {
+    border: none;
+    padding: 0px 4px;
+}
+
+.filterBar select:focus-visible,
+.filterBar select:focus,
+.filterBar select.active {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(135, 135, 135);
+}
+
+.filterBar .current-type {
+    width: 20px;
+}
+
 .filterBar a {
     display: flex;
     justify-content: center;
@@ -160,7 +177,7 @@ header.sticky .filterBar {
 }
 
 .pokedex {
-    margin-top: 80px;
+    margin-top: 140px;
     display: flex;
     flex-wrap: wrap;
     gap: 100px;

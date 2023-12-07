@@ -9,7 +9,8 @@ $API_URL = "https://pokebuildapi.fr/api/v1/pokemon";
 
 if (isset($_POST["submit"])) {
     if (!(isset($_POST["pokemon-data"]) && !empty($_POST["pokemon-data"]))) {
-        echo "Veuillez remplir le champ";
+        create_flash_message("empty_field", "Veuillez remplir le champ", FLASH_ERROR);
+        header("Location: ../index.php");
         die();
     }
 

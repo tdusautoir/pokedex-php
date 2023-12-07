@@ -18,6 +18,13 @@ function dd($var) //function for debug
     die();
 }
 
+function dump($var) //function for debug
+{
+    echo "<pre style='font-size: 18px'>";
+    print_r($var);
+    echo "</pre>";
+}
+
 function init_php_session(): bool //init php session
 {
     if (!session_id()) {
@@ -87,4 +94,57 @@ function display_flash_message_by_type(string $type): void
             }
         }
     }
+}
+
+function build_url(string $param): string
+{
+    $currentURL = $_SERVER['REQUEST_URI'];
+
+    if (strpos($currentURL, 'index.php') === false) {
+        $currentURL = './index.php';
+    }
+
+    $separator = (parse_url($currentURL, PHP_URL_QUERY) == NULL) ? '?' : '&'; // Vérifie si des paramètres existent déjà dans l'URL
+
+    $param_value = explode('=', $param)[1];
+    $param_index = explode('=', $param)[0];
+
+    if (isset($_GET[$param_index])) {
+        $currentURL = str_replace($param_index . '=' . $_GET[$param_index], $param_index . '=' . $param_value, $currentURL);
+        return $currentURL;
+    }
+
+    $newURL = $currentURL . $separator . $param;
+    return $newURL;
+}
+
+
+function remove_from_url(string $param_to_remove): string
+{
+    $currentURL = $_SERVER['REQUEST_URI'];
+
+    if (strpos($currentURL, 'index.php') === false) {
+        return './index.php';
+    }
+
+    $urlParts = parse_url($currentURL);
+
+    if (isset($urlParts['query'])) {
+        parse_str($urlParts['query'], $queryParams);
+
+        if (isset($queryParams[$param_to_remove])) {
+            unset($queryParams[$param_to_remove]);
+
+            $newQuery = http_build_query($queryParams);
+
+            $newURL = $urlParts['path'];
+            if ($newQuery !== '') {
+                $newURL .= '?' . $newQuery;
+            }
+
+            return $newURL;
+        }
+    }
+
+    return $currentURL;
 }
