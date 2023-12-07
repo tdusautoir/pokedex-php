@@ -5,7 +5,7 @@ require_once('../db.php');
 
 init_php_session();
 
-if (isset($_POST["submit"])) {
+if (isset($_POST["delete"])) {
     if (!(isset($_POST["pokemonId"]) && !empty($_POST["pokemonId"]))) {
         echo "aucun id spécifié";
         die();

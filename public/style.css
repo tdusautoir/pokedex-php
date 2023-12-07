@@ -244,6 +244,30 @@ header.sticky .filterBar {
     font-family: "Arial", sans-serif;
 }
 
+.pokemon-page .actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+}
+
+.pokemon-page .actions button,
+.pokemon-page .actions a {
+    background-color: rgb(240, 240, 240);
+    font-weight: 800;
+    border: none;
+    border-radius: 9999px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.pokemon-page .actions button[name="save-edit"] {
+    background-color: rgb(240, 240, 240);
+}
+
 .pokemon-header img {
     width: 375px;
     height: 375px;
@@ -307,20 +331,15 @@ header.sticky .filterBar {
     height: 40px;
 }
 
-.pokemom-delete-form {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
-.pokemom-delete-form button {
+.pokemon-page .actions .pokemom-delete-form button {
     background-color: #ff5454;
     color: white;
-    font-weight: 800;
-    border: none;
-    border-radius: 9999px;
-    padding: 10px 20px;
-    cursor: pointer;
+}
+
+.pokemon-edit-form input[name="name"] {
+    display: block;
+    font-size: 2rem;
+    width: 170px;
 }
 
 @keyframes notif {

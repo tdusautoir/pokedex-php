@@ -124,10 +124,13 @@ $preEvolutions = $query->fetchAll();
                     </div>
                 </div>
             </div>
-            <form action="./controller/deletePokemon.php" method="POST" class="pokemom-delete-form">
-                <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
-                <button type="submit" name="submit">Supprimer</button>
-            </form>
+            <div class="actions">
+                <form action="./controller/deletePokemon.php" method="POST" class="pokemom-delete-form">
+                    <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
+                    <button type="submit" name="delete">Supprimer</button>
+                </form>
+                <a href="./pokemon-edit.php?id=<?= $pokemon->pokemonId ?>">Éditer</a>
+            </div>
         </div>
     </main>
 </body>
