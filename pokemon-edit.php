@@ -59,7 +59,7 @@ $preEvolutions = $query->fetchAll();
     <main>
         <?php include('./components/flashMessage.php'); ?>
         <?php include('./components/navBar.php'); ?>
-        <form class="pokemon-edit-form" method="POST" action="./controller/updatePokemon.php" enctype="multipart/form-data">
+        <form class="pokemon-edit-form" method="POST" action="./controller/updatePokemon.php?pokemonId=<?= $pokemon->pokemonId ?>" enctype="multipart/form-data">
             <input type="hidden" name="pokemonId" value="<?= $pokemon->pokemonId ?>">
             <div class="pokemon-page">
                 <a href="./index.php">Retour</a>

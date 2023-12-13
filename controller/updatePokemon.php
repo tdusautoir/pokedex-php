@@ -88,3 +88,12 @@ if (isset($_POST["save-edit"])) {
         die();
     }
 }
+
+if (
+    isset($_SERVER['CONTENT_LENGTH'])
+    && (int) $_SERVER['CONTENT_LENGTH'] > convertToBytes(ini_get('post_max_size') . 'B')
+) {
+    create_flash_message("pokemon_picture_error", "Votre fichier est trop large.", FLASH_ERROR);
+    header("Location: ../pokemon.php?id=" . $_GET["pokemonId"]);
+    exit();
+}
